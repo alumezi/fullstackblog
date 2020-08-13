@@ -21,13 +21,7 @@ const mostBlogs = blogs => {
         }
     })
 
-    let author = Object.keys(occurrences).reduce((acc, curr) => {
-        if (occurrences[acc] > occurrences[curr]) {
-            return acc
-        } else {
-            return curr
-        }
-    })
+    let author = findHighestAuthor(occurrences);
 
     return {
         author,
@@ -35,9 +29,39 @@ const mostBlogs = blogs => {
     }
 }
 
+const mostLikes = blogs => {
+    let likes = {};
+
+    blogs.forEach(item => {
+        if (likes[item.author]) {
+            likes[item.author] += item.likes;
+        } else {
+            likes[item.author] = item.likes;
+        }
+    })
+
+    let author = findHighestAuthor(likes);
+
+    return {
+        author,
+        likes: likes[author]
+    }
+}
+
+function findHighestAuthor(authors) {
+    return Object.keys(authors).reduce((acc, curr) => {
+        if (authors[acc] > authors[curr]) {
+            return acc
+        } else {
+            return curr
+        }
+    })
+}
+
 module.exports = {
     dummy,
     totalLikes,
     favoriteBlog,
-    mostBlogs
+    mostBlogs,
+    mostLikes
 }

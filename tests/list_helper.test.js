@@ -1,4 +1,4 @@
-const { dummy, totalLikes, favoriteBlog, mostBlogs } = require('../utils/list_helper')
+const { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes } = require('../utils/list_helper')
 
 const blogs = [
     { _id: "5a422a851b54a676234d17f7", title: "React patterns", author: "Michael Chan", url: "https://reactpatterns.com/", likes: 7, __v: 0 },
@@ -48,6 +48,17 @@ describe("mostBlogs", () => {
             {
                 author: "Robert C. Martin",
                 blogs: 3
+            }
+        )
+    })
+})
+
+describe("mostLikes", () => {
+    test("find the author with most blogs", () => {
+        expect(mostLikes(blogs)).toEqual(
+            {
+                author: "Edsger W. Dijkstra",
+                likes: 17
             }
         )
     })
