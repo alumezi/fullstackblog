@@ -10,8 +10,29 @@ const favoriteBlog = blogs => blogs.reduce((acc, curr) => {
     }
 });
 
+const mostBlogs = blogs => {
+    let occurrences = {};
+
+    blogs.forEach(item => {
+        if (occurrences[item.author]) {
+            occurrences[item.author]++;
+        } else {
+            occurrences[item.author] = 1;
+        }
+    })
+
+    return Object.keys(occurrences).reduce((acc, curr) => {
+        if (occurrences[acc] > occurrences[curr]) {
+            return acc
+        } else {
+            return curr
+        }
+    })
+}
+
 module.exports = {
     dummy,
     totalLikes,
-    favoriteBlog
+    favoriteBlog,
+    mostBlogs
 }
