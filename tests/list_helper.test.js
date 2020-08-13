@@ -44,6 +44,11 @@ describe("favoriteBlog", () => {
 
 describe("mostBlogs", () => {
     test("find the author with most blogs", () => {
-        expect(mostBlogs(blogs)).toEqual("Robert C. Martin")
+        expect(mostBlogs(blogs)).toEqual(
+            {
+                author: "Robert C. Martin",
+                blogs: 3
+            }
+        )
     })
 })

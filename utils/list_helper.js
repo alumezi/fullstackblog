@@ -21,13 +21,18 @@ const mostBlogs = blogs => {
         }
     })
 
-    return Object.keys(occurrences).reduce((acc, curr) => {
+    let author = Object.keys(occurrences).reduce((acc, curr) => {
         if (occurrences[acc] > occurrences[curr]) {
             return acc
         } else {
             return curr
         }
     })
+
+    return {
+        author,
+        blogs: occurrences[author]
+    }
 }
 
 module.exports = {
