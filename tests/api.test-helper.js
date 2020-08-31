@@ -23,6 +23,11 @@ const noLikeBlog = {
     "url": "/asd/asd/asd/ads"
 };
 
+const noTitleNoUrlBlog = {
+    "author": "This girl",
+    likes: 23
+};
+
 const dbItems = async () => {
     const dbItems = await Blog.find({});
     return dbItems.map(item => item.toJSON());

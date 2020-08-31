@@ -2,7 +2,7 @@ const Blog = require("../models/blog");
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../app');
-const { initialBlogs, newBlog, noLikeBlog, dbItems } = require("./api.test-helper");
+const { initialBlogs, newBlog, noLikeBlog, noTitleNoUrlBlog, dbItems } = require("./api.test-helper");
 
 const api = request(app);
 
@@ -51,6 +51,14 @@ describe('likes', () => {
         const lastElement = allItems[allItems.length - 1];
 
         expect(lastElement.likes).toBe(0);
+    })
+})
+
+describe('Missing properties', () => {
+    test('missing title and url', async () => {
+        await api.post('/api/blogs')
+            .send(noTitleNoUrlBlog)
+            .expect(400);
     })
 })
 
