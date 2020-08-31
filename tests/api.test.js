@@ -18,25 +18,29 @@ describe('fetches data', () => {
         expect(response.body).toHaveLength(initialBlogs.length);
     });
 
+    test('id exists', async () => {
+        const response = await api.get('/api/blogs');
+        expect(response.body[0].id).toBeDefined();
+    })
 });
 
-describe('adds data', () => {
-    test('add data', async () => {
-        let response = await api.post('/api/blogs')
-            .send({
-                "title": "SDASD",
-                "author": "this guy",
-                "url": "/asdasd/asdasd",
-                "likes": 2
-            })
+// describe('adds data', () => {
+//     test('add data', async () => {
+//         let response = await api.post('/api/blogs')
+//             .send({
+//                 "title": "SDASD",
+//                 "author": "this guy",
+//                 "url": "/asdasd/asdasd",
+//                 "likes": 2
+//             })
 
-    });
-});
+//     });
+// });
 
 beforeEach(async () => {
     await Blog.deleteMany({});
 
-    let blogObject = new Blog(initialBlogs);
+    let blogObject = new Blog(initialBlogs[0]);
     await blogObject.save();
 })
 
