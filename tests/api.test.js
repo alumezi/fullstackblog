@@ -2,7 +2,7 @@ const Blog = require("../models/blog");
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../app');
-const { initialBlogs, newBlog, dbItems } = require("./api.test-helper");
+const { initialBlogs, newBlog, noLikeBlog, dbItems } = require("./api.test-helper");
 
 const api = request(app);
 
@@ -32,14 +32,27 @@ describe('adds data', () => {
             .expect('Content-Type', /application\/json/);
 
         const allItems = await dbItems();
-        console.log("allItems", allItems)
-
         const titles = allItems.map(item => item.title);
+
         expect(titles).toContain(newBlog.title);
         expect(allItems).toHaveLength(initialBlogs.length + 1);
 
     });
 });
+
+describe('likes', () => {
+    test('default to zero', async () => {
+        await api.post('/api/blogs')
+            .send(noLikeBlog)
+            .expect(201)
+            .expect('Content-Type', /application\/json/);
+
+        const allItems = await dbItems();
+        const lastElement = allItems[allItems.length - 1];
+
+        expect(lastElement.likes).toBe(0);
+    })
+})
 
 beforeEach(async () => {
     await Blog.deleteMany({});

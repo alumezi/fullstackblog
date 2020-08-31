@@ -17,6 +17,12 @@ const newBlog = {
     "likes": 13
 };
 
+const noLikeBlog = {
+    "title": "THis is an additional blog",
+    "author": "This girl",
+    "url": "/asd/asd/asd/ads"
+};
+
 const dbItems = async () => {
     const dbItems = await Blog.find({});
     return dbItems.map(item => item.toJSON());
@@ -25,5 +31,6 @@ const dbItems = async () => {
 module.exports = {
     initialBlogs,
     newBlog,
+    noLikeBlog,
     dbItems
 }
