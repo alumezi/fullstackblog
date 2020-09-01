@@ -56,6 +56,23 @@ describe('deletes data', () => {
     })
 })
 
+describe('update data', () => {
+    test('update likes', async () => {
+        const records = await dbItems();
+        const recordToUpdate = records[0];
+
+        await api.put(`/api/blogs/${recordToUpdate.id}`)
+            .send({ ...recordToUpdate, likes: 100 })
+            .expect(200)
+            .expect('Content-Type', /application\/json/);
+
+        const modifiedRecords = await dbItems();
+        const modifiedRecord = modifiedRecords[0];
+        expect(modifiedRecords).toHaveLength(initialBlogs.length);
+        expect(modifiedRecord.likes).toBe(100)
+    })
+})
+
 describe('likes', () => {
     test('default to zero', async () => {
         await api.post('/api/blogs')

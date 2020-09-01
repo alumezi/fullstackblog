@@ -12,4 +12,16 @@ content-type: application/json
 
 ###
 
+PUT http://localhost:3001/api/blogs/5f33cf63c0f8052b468d4839
+content-type: application/json
+
+{
+    "title": "Changed title",
+    "url" : "/url/to/new",
+    "author": "Arbnor Lumezi",
+    "likes": 100
+}
+
+###
+
 DELETE  http://localhost:3001/api/blogs/5f4d4e31837cee49ff21465a
