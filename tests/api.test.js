@@ -40,6 +40,22 @@ describe('adds data', () => {
     });
 });
 
+describe('deletes data', () => {
+    test('delete record', async () => {
+        const records = await dbItems();
+        const recordToDelete = records[0];
+
+        await api.delete(`/api/blogs/${recordToDelete.id}`)
+            .expect(204)
+
+        const recordsAfter = await dbItems();
+        expect(recordsAfter).toHaveLength(initialBlogs.length - 1);
+
+        const contents = recordsAfter.map(item => item.id);
+        expect(contents).not.toContain(recordToDelete.id);
+    })
+})
+
 describe('likes', () => {
     test('default to zero', async () => {
         await api.post('/api/blogs')

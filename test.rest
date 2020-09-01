@@ -9,3 +9,7 @@ content-type: application/json
     "author": "this guy",
     "likes": 2
 }
+
+###
+
+DELETE  http://localhost:3001/api/blogs/5f4d4e31837cee49ff21465a

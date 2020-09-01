@@ -6,7 +6,7 @@ const config = require('./utils/config')
 const BlogRouter = require('./controllers/blog')
 const { requestLogger, unknownEndpoint, errorHandler } = require('./utils/middleware')
 
-mongoose.connect(config.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(config.DB_URL, { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: true })
 
 app.use(cors())
 app.use(express.json())
