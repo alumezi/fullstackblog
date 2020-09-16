@@ -32,9 +32,9 @@ POST  http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username":"Arbnor",
+    "username":"asdasdasdasdasdas",
     "name" : "Arbnor Lumezi",
-    "password" : "sekret"
+    "password" : "asda123123sd"
 }
 
 ###
