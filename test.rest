@@ -24,6 +24,19 @@ content-type: application/json
 
 ###
 
+POST http://localhost:3001/api/blogs
+content-type: application/json
+
+{
+    "title": "Changed title 2 ",
+    "url" : "/url/to/new 2 ",
+    "author": "Arbnor Lumezi",
+    "likes": 100,
+    "userId": "5f6280a804a2191389adfa82"
+}
+
+###
+
 DELETE  http://localhost:3001/api/blogs/5f4d4e31837cee49ff21465a
 
 ###
@@ -32,7 +45,7 @@ POST  http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username":"asdasdasdasdasdas",
+    "username":"Arbnor",
     "name" : "Arbnor Lumezi",
     "password" : "asda123123sd"
 }
@@ -40,3 +53,7 @@ Content-Type: application/json
 ###
 
 GET   http://localhost:3001/api/users
+
+###
+
+GET   http://localhost:3001/api/users/5f627ee3f622cf2ad75134a3

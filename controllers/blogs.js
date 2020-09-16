@@ -1,17 +1,33 @@
 const BlogRouter = require('express').Router();
 const Blog = require('../models/blog');
+const User = require('../models/user');
 
 BlogRouter.get('/', async (request, response) => {
-    let blogs = await Blog.find({});
+    let blogs = await Blog.find({}).populate('user', { username: true, name: true });
     try {
-        response.json(blogs);
+        response.json(blogs.map(blog => blog.toJSON()));
     } catch (error) {
         response.status(404).end();
     }
 })
 
 BlogRouter.post('/', async (request, response) => {
-    const blog = new Blog(request.body);
+    const body = request.body;
+
+    if (!body.userId) {
+        response.status(400).json({ error: "User id not found" })
+    }
+
+    const user = await User.findById(body.userId)
+
+    const blog = new Blog({
+        title: body.title,
+        author: body.author,
+        url: body.url,
+        likes: body.likes,
+        user: user._id
+    })
+
     if (!blog.likes) {
         blog.likes = 0;
     }
@@ -19,7 +35,9 @@ BlogRouter.post('/', async (request, response) => {
         response.status(400).end();
         return;
     }
-    await blog.save();
+    const savedBlog = await blog.save();
+    user.blogs = user.blogs.concat(savedBlog._id)
+    await user.save();
     response.status(201).json(blog);
 })
 

@@ -31,8 +31,14 @@ UserRouter.post('/', async (request, response, next) => {
 })
 
 UserRouter.get('/', async (request, response) => {
-    const users = await User.find({})
+    const users = await User.find({}).populate('blogs')
+    response.json(users.map(user => user.toJSON()));
+})
+
+UserRouter.get('/:id', async (request, response) => {
+    const id = request.params.id;
+    const users = await User.findById(id)
     response.json(users)
 })
 
-module.exports = UserRouter;
+module.exports = UserRouter;    
