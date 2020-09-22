@@ -26,13 +26,13 @@ content-type: application/json
 
 POST http://localhost:3001/api/blogs
 content-type: application/json
+Authorization: Bearer xxx
 
 {
-    "title": "Changed title 2 ",
-    "url" : "/url/to/new 2 ",
+    "title": "Authorized title",
+    "url" : "/url/to/authorized",
     "author": "Arbnor Lumezi",
-    "likes": 100,
-    "userId": "5f6280a804a2191389adfa82"
+    "likes": 100
 }
 
 ###
@@ -57,3 +57,13 @@ GET   http://localhost:3001/api/users
 ###
 
 GET   http://localhost:3001/api/users/5f627ee3f622cf2ad75134a3
+
+###
+
+POST   http://localhost:3001/api/login
+Content-Type: application/json
+
+{
+    "username" : "Arbnor",
+    "password" : "asda123123sd"
+}

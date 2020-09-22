@@ -190,11 +190,11 @@ describe('user operations', () => {
 
 beforeEach(async () => {
     await Blog.deleteMany({});
+    await User.deleteMany({});
 
     let blogObject = new Blog(initialBlogs[0]);
     await blogObject.save();
 
-    await User.deleteMany({});
     let user = new User(initialUsers[0]);
     await user.save();
 })
