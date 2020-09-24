@@ -42,6 +42,16 @@ describe('adds data', () => {
         expect(titles).toContain(initialBlogs[0].title);
         expect(allItems).toHaveLength(initialBlogs.length + 1);
     });
+
+    test('add data with not token', async () => {
+        await api.post('/api/blogs')
+            .set('Authorization', "")
+            .send(initialBlogs[0])
+            .expect(401)
+
+        const allItems = await dbItems();
+        expect(allItems).toHaveLength(initialBlogs.length);
+    });
 });
 
 describe('deletes data', () => {
