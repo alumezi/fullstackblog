@@ -20,13 +20,6 @@ const initialUsers = [
     }
 ];
 
-const newBlog = {
-    "title": "THis is an additional blog",
-    "author": "This girl",
-    "url": "/asd/asd/asd/ads",
-    "likes": 13
-};
-
 const noLikeBlog = {
     "title": "THis is an additional blog",
     "author": "This girl",
@@ -52,7 +45,6 @@ module.exports = {
     initialUsers,
     noTitleNoUrlBlog,
     initialBlogs,
-    newBlog,
     noLikeBlog,
     dbItems,
     dbUsers

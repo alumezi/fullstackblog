@@ -1,11 +1,14 @@
-const Blog = require("../models/blog");
-const User = require("../models/user");
 const mongoose = require('mongoose');
 const request = require('supertest');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const Blog = require("../models/blog");
+const User = require("../models/user");
 const app = require('../app');
-const { initialUsers, initialBlogs, newBlog, noLikeBlog, noTitleNoUrlBlog, dbItems, dbUsers } = require("./api.test-helper");
+const { initialUsers, initialBlogs, noLikeBlog, noTitleNoUrlBlog, dbItems, dbUsers } = require("./api.test-helper");
 
 const api = request(app);
+let token = "";
 
 describe('fetches data', () => {
     test('status and content type', async () => {
@@ -28,16 +31,16 @@ describe('fetches data', () => {
 describe('adds data', () => {
     test('add data', async () => {
         await api.post('/api/blogs')
-            .send(newBlog)
+            .set('Authorization', `Bearer ${token}`)
+            .send(initialBlogs[0])
             .expect(201)
             .expect('Content-Type', /application\/json/);
 
         const allItems = await dbItems();
         const titles = allItems.map(item => item.title);
 
-        expect(titles).toContain(newBlog.title);
+        expect(titles).toContain(initialBlogs[0].title);
         expect(allItems).toHaveLength(initialBlogs.length + 1);
-
     });
 });
 
@@ -47,6 +50,7 @@ describe('deletes data', () => {
         const recordToDelete = records[0];
 
         await api.delete(`/api/blogs/${recordToDelete.id}`)
+            .set('Authorization', `Bearer ${token}`)
             .expect(204)
 
         const recordsAfter = await dbItems();
@@ -77,6 +81,7 @@ describe('update data', () => {
 describe('likes', () => {
     test('default to zero', async () => {
         await api.post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
             .send(noLikeBlog)
             .expect(201)
             .expect('Content-Type', /application\/json/);
@@ -91,6 +96,7 @@ describe('likes', () => {
 describe('Missing properties', () => {
     test('missing title and url', async () => {
         await api.post('/api/blogs')
+            .set('Authorization', `Bearer ${token}`)
             .send(noTitleNoUrlBlog)
             .expect(400);
     })
@@ -192,11 +198,33 @@ beforeEach(async () => {
     await Blog.deleteMany({});
     await User.deleteMany({});
 
-    let blogObject = new Blog(initialBlogs[0]);
-    await blogObject.save();
+    const saltRounds = 10;
+    const passwordHash = await bcrypt.hash(initialUsers[0].password, saltRounds)
 
-    let user = new User(initialUsers[0]);
+    const user = new User({
+        username: initialUsers[0].username,
+        name: initialUsers[0].name,
+        passwordHash
+    })
+
     await user.save();
+
+    const userForToken = {
+        username: user.username,
+        id: user._id
+    }
+
+    token = jwt.sign(userForToken, process.env.SECRET)
+
+    const blog = new Blog({
+        title: initialBlogs[0].title,
+        author: initialBlogs[0].author,
+        url: initialBlogs[0].url,
+        likes: initialBlogs[0].likes,
+        user: user._id
+    })
+
+    await blog.save();
 })
 
 afterAll(() => {
