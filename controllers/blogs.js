@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 BlogRouter.get('/', async (request, response) => {
     let blogs = await Blog.find({}).populate('user', { username: true, name: true });
     try {
-        response.json(blogs.map(blog => blog.toJSON()));
+        response.json(blogs.map(blog => blog));
     } catch (error) {
         response.status(404).end();
     }
@@ -84,7 +84,8 @@ BlogRouter.put('/:id', async (request, response) => {
     }
 
     try {
-        const updatedRecord = await Blog.findByIdAndUpdate(id, newRecord, { new: true });
+        const updatedRecord = await Blog.findByIdAndUpdate(id, newRecord, { new: true })
+                                    .populate('user', { username: true, name: true })
         response.json(updatedRecord);
     } catch (error) {
         response.status(404).end();
