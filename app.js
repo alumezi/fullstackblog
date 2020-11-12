@@ -17,6 +17,12 @@ app.use(requestLogger)
 app.use('/api/blogs', BlogRouter);
 app.use('/api/users', UserRouter);
 app.use('/api/login', LoginRouter);
+
+if (process.env.NODE_ENV === 'test') {
+    const testRouter = require('./controllers/test')
+    app.use('/api/test', testRouter)
+}
+
 app.use(unknownEndpoint);
 app.use(errorHandler);
 

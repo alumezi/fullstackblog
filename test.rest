@@ -46,9 +46,9 @@ POST  http://localhost:3001/api/users
 Content-Type: application/json
 
 {
-    "username":"Arbnor",
+    "username":"alumezi",
     "name" : "Arbnor Lumezi",
-    "password" : "asda123123sd"
+    "password" : "sekret"
 }
 
 ###
@@ -65,6 +65,6 @@ POST   http://localhost:3001/api/login
 Content-Type: application/json
 
 {
-    "username" : "Arbnor",
-    "password" : "asda123123sd"
+    "username" : "alumezi",
+    "password" : "sekret"
 }
