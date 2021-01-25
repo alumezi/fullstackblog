@@ -4,6 +4,14 @@ const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 
 BlogRouter.get("/", async (request, response) => {
+  const token = request.token;
+
+  const decodedToken = jwt.decode(token, process.env.SECRET);
+
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid" });
+  }
+
   let blogs = await Blog.find({}).populate("user", {
     username: true,
     name: true,
@@ -76,6 +84,14 @@ BlogRouter.delete("/:id", async (request, response) => {
 });
 
 BlogRouter.put("/:id", async (request, response) => {
+  const token = request.token;
+
+  const decodedToken = jwt.decode(token, process.env.SECRET);
+
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid" });
+  }
+
   const id = request.params.id;
   const record = request.body;
 
@@ -88,6 +104,30 @@ BlogRouter.put("/:id", async (request, response) => {
 
   try {
     const updatedRecord = await Blog.findByIdAndUpdate(id, newRecord, {
+      new: true,
+    }).populate("user", { username: true, name: true });
+    response.json(updatedRecord);
+  } catch (error) {
+    response.status(404).end();
+  }
+});
+
+BlogRouter.put("/:id/comments", async (request, response) => {
+  const token = request.token;
+
+  const decodedToken = jwt.decode(token, process.env.SECRET);
+
+  if (!token || !decodedToken.id) {
+    return response.status(401).json({ error: "token missing or invalid" });
+  }
+
+  const id = request.params.id;
+  const comment = request.body.comment;
+
+  try {
+    const currentRecord = await Blog.findById(id);
+    currentRecord.comments.push(comment);
+    const updatedRecord = await Blog.findByIdAndUpdate(id, currentRecord, {
       new: true,
     }).populate("user", { username: true, name: true });
     response.json(updatedRecord);

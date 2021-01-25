@@ -1,9 +1,10 @@
 GET http://localhost:3001/api/blogs
-
+Authorization: Bearer 
 ###
 
 POST http://localhost:3001/api/blogs
 content-type: application/json
+Authorization: Bearer 
 
 {
     "author": "this guy",
@@ -14,12 +15,22 @@ content-type: application/json
 
 PUT http://localhost:3001/api/blogs/5f33cf63c0f8052b468d4839
 content-type: application/json
+Authorization: Bearer 
 
 {
     "title": "Changed title",
     "url" : "/url/to/new",
     "author": "Arbnor Lumezi",
     "likes": 100
+}
+
+### Comments
+PUT http://localhost:3001/api/blogs/6005d902cb11a31c33e59bfe/comments
+content-type: application/json
+Authorization: Bearer 
+
+{
+    "comment": "Here we go again"
 }
 
 ###
